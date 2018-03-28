@@ -1,0 +1,41 @@
+#ifndef __GUI_HPP
+#define __GUI_HPP
+
+#include <NUIWindow>
+#include <NUIObject>
+
+#include <signals/signal.hpp>
+
+namespace NUI {
+
+    class NUIApp 
+    {
+    public:
+
+        /** Constructor */
+        NUIApp();
+
+        void setMainWin(NUIWindow* win) { m_win = win; }
+        bool isKeyPressed();
+        void handleKeyPress();
+
+        static void NUIPostEvent(NUIObject* recv, NUIEvent* event);
+
+        static NUIWindow* focusWindow();
+        /** Destructor */
+        virtual ~NUIApp();
+
+        /** Initialize */
+        void mainloop(volatile bool* running);
+
+        Signals::signal<NUIReal> keyPressed;
+
+    private:
+        bool m_running;
+        NUIWindow* m_win;
+    };
+}
+
+extern NUI::NUIApp* nuiApp;
+
+#endif

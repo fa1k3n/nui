@@ -1,0 +1,93 @@
+#ifndef __NUI_OBJECT__
+#define __NUI_OBJECT__
+
+#include <vector>
+#include <ncurses.h>
+#include <string>
+#include <NUIColor.hpp>
+#include <signals/signal.hpp>
+
+#define NUI_UNUSED(par) (void)par;
+
+namespace NUI {
+
+	typedef std::size_t NUIReal;
+	typedef std::string NUIString;
+
+	struct NUIBoundingRect {
+		NUIReal x, y, width, height;
+	};
+
+	class NUIEvent {
+	public:
+		enum NUIEventType {
+			Paint
+		};
+
+		NUIEvent(NUIEventType type) { m_type = type; }
+		NUIEventType type() { return m_type; }
+
+	private:
+		NUIEventType m_type;
+	};
+
+	class NUIPaintEvent : public NUIEvent {
+	public:
+		NUIPaintEvent(NUIBoundingRect rect) : NUIEvent(NUIEvent::Paint) {
+			m_rect = rect;
+		}
+
+		NUIBoundingRect rect() { return m_rect; }
+	private:
+		NUIBoundingRect m_rect;
+
+
+	};
+
+	class NUIObject {
+	public:
+		typedef WINDOW  NUIGfxCntx ;
+
+		NUIObject(NUIObject* parent = nullptr);
+
+		NUIObject& addChild(NUIObject* obj);
+		bool isDirty() { return m_dirty; }
+		void setDirty(bool d);
+		Signals::signal<bool> dirtyChanged;
+
+		virtual NUIObject& setWidth(NUIReal width);
+		virtual NUIReal getWidth() { return m_width; }
+
+		virtual bool event(NUIEvent* event);
+
+		virtual void paintEvent(NUIPaintEvent* event);
+
+		virtual NUIObject& setHeight(NUIReal height);
+		virtual NUIReal getHeight() { return m_height; }
+
+		NUIObject& setX(NUIReal x);
+		NUIReal getX() { return m_x; }
+		Signals::signal<NUIReal> xChanged;
+
+		NUIObject& setY(NUIReal y);
+		NUIReal getY() { return m_y; }
+		Signals::signal<NUIReal> yChanged;
+
+		NUIColor getColor();
+		NUIObject& setColor(NUIColor color);
+
+		virtual void draw(NUIBoundingRect& br, NUIGfxCntx* cntx = nullptr) = 0;
+
+		static NUIReal nObjects;  // Object counter
+	protected:
+
+		std::vector<NUIObject*> m_childs;
+		bool m_dirty;
+		NUIObject* m_parent;
+		NUIReal m_x, m_y;
+		NUIReal m_width, m_height;
+		NUIReal m_objectID;
+	};
+}
+
+#endif

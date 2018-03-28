@@ -1,0 +1,34 @@
+#ifndef __NUI_LABEL__
+#define __NUI_LABEL__
+
+#include <NUIObject>
+#include <NUIPoint.hpp>
+#include <NUIColor.hpp>
+#include <string>
+
+#include <signals/signal.hpp>
+
+namespace NUI {
+	class NUILabel : public NUIObject {
+	public:
+		NUILabel(NUIObject* parent = nullptr);
+		
+		NUILabel& setText(NUIString const &txt);
+		NUIString getText() { return m_text; }
+		Signals::signal<NUIString> textChanged;
+
+		NUILabel& setTextColor(NUIColor color);
+		void draw(NUIBoundingRect& br, NUIGfxCntx* cntx);
+		void update(); 
+
+		void paintEvent(NUIPaintEvent* event) override;
+
+
+		NUIReal getWidth() { return m_width > 0 ? m_width : m_text.length(); };
+
+	private:
+		NUIString m_text;
+	};
+}
+
+#endif

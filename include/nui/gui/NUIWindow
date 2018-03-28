@@ -1,0 +1,18 @@
+#ifndef __NUI_WINDOW__
+#define __NUI_WINDOW__
+
+#include <ncurses.h>
+#include <NUIObject>
+
+namespace NUI {
+   
+	class NUIWindow : public NUIObject {
+	public:
+		NUIWindow(NUIObject* parent = nullptr);
+		~NUIWindow();
+		void draw(NUIBoundingRect& rect, NUIGfxCntx* cntx = nullptr);
+
+		WINDOW* m_pWin;
+	};
+}
+#endif
