@@ -10,7 +10,7 @@ namespace NUI {
 	public:
 		NUIWindow(NUIObject* parent = nullptr);
 		~NUIWindow();
-		void draw(NUIBoundingRect& rect, NUIGfxCntx* cntx = nullptr);
+		void paintEvent(NUIPaintEvent* event) override;
 
 		WINDOW* m_pWin;
 	};

@@ -9,14 +9,14 @@ int main(void) {
 	NUI::NUIApp app;
 	NUI::NUIWindow win;
 
-	NUI::NUIRow row(&win);
-	row.setX(5).setY(5).setWidth(50);
+	//NUI::NUIRow row(&win);
+	//row.setX(5).setY(5).setWidth(50);
 	
-	NUI::NUILabel lbl(&row);
-	lbl.setTextColor(COLOR_BLACK).setText("Keypress: ").setColor(COLOR_GREEN).setWidth(15);
+	NUI::NUILabel lbl(&win);
+	lbl.setTextColor(COLOR_BLACK).setText("Keypress: ").setColor(COLOR_GREEN).setX(10).setY(5).setWidth(15);
 
-	NUI::NUILabel lbl2(&row);
-	lbl2.setText("").setWidth(25).setColor(COLOR_MAGENTA);
+	NUI::NUILabel lbl2(&win);
+	lbl2.setText("").setX(25).setY(5).setWidth(25).setColor(COLOR_MAGENTA);
 	
 	Signals::connect(&NUI::NUIApp::keyPressed, &app, [&](NUI::NUIReal ch) {
 		NUI::NUIString s(1, (char)ch);

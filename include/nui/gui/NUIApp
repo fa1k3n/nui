@@ -3,6 +3,9 @@
 
 #include <NUIWindow>
 #include <NUIObject>
+#include <functional>
+
+#include <queue>
 
 #include <signals/signal.hpp>
 
@@ -20,6 +23,8 @@ namespace NUI {
         void handleKeyPress();
 
         static void NUIPostEvent(NUIObject* recv, NUIEvent* event);
+        
+        static void NUISendEvent(NUIObject* recv, NUIEvent* event);
 
         static NUIWindow* focusWindow();
         /** Destructor */
@@ -33,6 +38,8 @@ namespace NUI {
     private:
         bool m_running;
         NUIWindow* m_win;
+
+        std::queue<std::function<void()>> m_eventQueue;
     };
 }
 

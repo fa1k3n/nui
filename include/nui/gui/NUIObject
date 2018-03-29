@@ -51,9 +51,6 @@ namespace NUI {
 		NUIObject(NUIObject* parent = nullptr);
 
 		NUIObject& addChild(NUIObject* obj);
-		bool isDirty() { return m_dirty; }
-		void setDirty(bool d);
-		Signals::signal<bool> dirtyChanged;
 
 		virtual NUIObject& setWidth(NUIReal width);
 		virtual NUIReal getWidth() { return m_width; }
@@ -64,6 +61,8 @@ namespace NUI {
 
 		virtual NUIObject& setHeight(NUIReal height);
 		virtual NUIReal getHeight() { return m_height; }
+
+		NUIBoundingRect rect() { return NUIBoundingRect{m_x, m_y, m_width, m_height}; }
 
 		NUIObject& setX(NUIReal x);
 		NUIReal getX() { return m_x; }
@@ -76,13 +75,12 @@ namespace NUI {
 		NUIColor getColor();
 		NUIObject& setColor(NUIColor color);
 
-		virtual void draw(NUIBoundingRect& br, NUIGfxCntx* cntx = nullptr) = 0;
+		void update(); 
 
 		static NUIReal nObjects;  // Object counter
 	protected:
 
 		std::vector<NUIObject*> m_childs;
-		bool m_dirty;
 		NUIObject* m_parent;
 		NUIReal m_x, m_y;
 		NUIReal m_width, m_height;
@@ -90,4 +88,4 @@ namespace NUI {
 	};
 }
 
-#endif
+#endif	

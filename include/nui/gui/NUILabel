@@ -18,8 +18,6 @@ namespace NUI {
 		Signals::signal<NUIString> textChanged;
 
 		NUILabel& setTextColor(NUIColor color);
-		void draw(NUIBoundingRect& br, NUIGfxCntx* cntx);
-		void update(); 
 
 		void paintEvent(NUIPaintEvent* event) override;
 
@@ -27,6 +25,8 @@ namespace NUI {
 		NUIReal getWidth() { return m_width > 0 ? m_width : m_text.length(); };
 
 	private:
+		void draw(NUIBoundingRect& br, NUIGfxCntx* cntx);
+
 		NUIString m_text;
 	};
 }

@@ -26,30 +26,10 @@ NUIWindow::~NUIWindow() {
 	endwin();
 }
 
-void NUIWindow::draw(NUIBoundingRect& rect, NUIGfxCntx* cntx) {
-	bool redraw = false; //false;
-	// Clear scrn if we have dirty region
-	//redraw = std::any_of(m_childs.begin(), m_childs.end(), [](NUIObject* obj){ return obj->isDirty(); });
+void NUIWindow::paintEvent(NUIPaintEvent* event) {
+	wclear(m_pWin);
+	for(auto obj : m_childs)
+		NUIApp::NUISendEvent(obj, new NUIPaintEvent(obj->rect()));
 
-	for(auto obj : m_childs) {
-		if(obj->isDirty()) {
-			redraw = true;
-		}
-	}
-	// If diry children exists, then redraw screen! 
-	// This should be updated to only clear the actual child
-	if(redraw) {
-		wclear(m_pWin);
-		for(auto obj : m_childs) {
-
-			// Here we should calculate the rectangle
-			// Get wanted size
-			NUIBoundingRect r{obj->getX(), obj->getY(), obj->getWidth(), obj->getHeight()};
-			obj->draw(r, m_pWin);
-			obj->setDirty(false);
-		}
-		wrefresh(m_pWin);
-		refresh();
-		redraw = false;
-	}
+	NUIObject::paintEvent(event);
 }

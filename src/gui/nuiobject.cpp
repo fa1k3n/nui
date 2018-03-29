@@ -1,11 +1,12 @@
 #include <NUIObject>
+#include <NUIApp>
+
 
 using namespace NUI;
 
 NUIReal NUIObject::nObjects = 0;
 
 NUIObject::NUIObject(NUIObject* parent) :
-	m_dirty(false),
 	m_parent(parent),
 	m_width(0),
 	m_height(0),
@@ -18,17 +19,10 @@ NUIObject::NUIObject(NUIObject* parent) :
 }
 
 NUIObject& NUIObject::addChild(NUIObject* obj) {
-	Signals::connect(&NUIObject::dirtyChanged, obj, &NUIObject::setDirty, this);
 	m_childs.push_back(obj);
+	update();
 	return *this;
 }		
-
-void NUIObject::setDirty(bool d) {
-	if(m_dirty != d) {
-		m_dirty = d;		
-		emit dirtyChanged(d);
-	}
-}
 
 NUIObject& NUIObject::setWidth(NUIReal width) {
 	m_width = width;
@@ -62,6 +56,10 @@ NUIObject& NUIObject::setColor(NUIColor color) {
 	return *this;
 }
 
+void NUIObject::update() {
+	NUIApp::NUIPostEvent(this, new NUIPaintEvent(NUIBoundingRect{m_x, m_y, m_width, m_height}));
+}
+
 bool NUIObject::event(NUIEvent* event) {
 	if(event->type() == NUIEvent::Paint) {
 		NUIPaintEvent* e = static_cast<NUIPaintEvent*>(event);
@@ -73,5 +71,6 @@ bool NUIObject::event(NUIEvent* event) {
 }
 
 void NUIObject::paintEvent(NUIPaintEvent* event) {
-	
+	wrefresh(NUIApp::focusWindow()->m_pWin);
+	refresh();
 }

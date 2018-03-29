@@ -8,6 +8,7 @@ NUIRow::NUIRow(NUIObject* parent) : NUIObject(parent) {
 
 }
 
+/*
 void NUIRow::draw(NUIBoundingRect& rect, NUIGfxCntx* cntx) {
 	NUI_UNUSED(rect);
 	NUI_UNUSED(cntx);
@@ -17,7 +18,7 @@ void NUIRow::draw(NUIBoundingRect& rect, NUIGfxCntx* cntx) {
 	for(auto child : m_childs) {
 		NUIBoundingRect cr{rect.x + col, rect.y, child->getWidth(), child->getHeight()}; 
 		child->draw(cr, cntx);
-		child->setDirty(false);  // Tell the cild it has been drawn
 		col += child->getWidth();
 	}
 }
+*/

@@ -25,6 +25,11 @@ void NUILabel::draw(NUIBoundingRect& rect, NUIGfxCntx* cntx) {
 	// CHeck that string fits inside bounding rect
 	std::string contStr(m_text.c_str());
 
+	m_x = rect.x;
+	m_y = rect.y;
+	m_width = rect.width;
+	m_height = rect.height;
+
 	// If we are to cut the string we want an ellipsis in
 	// the end, e.g. 3 chars 
 	if (contStr.length() > rect.width) {
@@ -37,16 +42,11 @@ void NUILabel::draw(NUIBoundingRect& rect, NUIGfxCntx* cntx) {
 	wattroff(cntx, COLOR_PAIR(NUIColorPair::getColorPair(m_objectID).index));
 }
 
-void NUILabel::update() {
-	//setDirty(true);
-	NUIApp::NUIPostEvent(this, new NUIPaintEvent(NUIBoundingRect{0, 0, m_width, m_height}));
-}
-
 void NUILabel::paintEvent(NUIPaintEvent* event) {
-	//NUIWindow* win = NUIApp::focusWindow();
-	//NUIBoundingRect r = event->rect();
-	//draw(r, win->m_pWin);
-	setDirty(true);
+	NUIWindow* win = NUIApp::focusWindow();
+	NUIBoundingRect r = event->rect();
+	draw(r, win->m_pWin);
+	NUIObject::paintEvent(event);
 }
 
 

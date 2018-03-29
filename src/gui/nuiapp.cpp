@@ -1,6 +1,8 @@
 #include <NUIApp>
 #include <NUIWindow>
 
+#include <functional>
+
 using namespace NUI;
 
 NUIApp* nuiApp = nullptr;
@@ -36,17 +38,26 @@ void NUIApp::handleKeyPress() {
 
 /** Initialize */
 void NUIApp::mainloop(volatile bool* running) {
-	NUIBoundingRect rect{0, 0, m_win->getWidth(), m_win->getHeight()};
-
 	while(*running) {
 		if(isKeyPressed()) handleKeyPress();
-		m_win->draw(rect);  // Should be event
+
+		while(nuiApp->m_eventQueue.size() > 0) {
+			nuiApp->m_eventQueue.front()();     // Invoke event
+			nuiApp->m_eventQueue.pop();			// And remove
+		}
 	}
 
 	use_default_colors();
 }
 
 void NUIApp::NUIPostEvent(NUIObject* recv, NUIEvent* event) {
+	//auto invoker = std::function<void()>(std::bind(&NUIObject::event, recv, event));
+	//nuiApp->m_eventQueue.push(invoker);	
+	recv->event(event);
+
+}
+
+void NUIApp::NUISendEvent(NUIObject* recv, NUIEvent* event) {
 	recv->event(event);
 }
 
