@@ -5,6 +5,7 @@
 #include <ncurses.h>
 #include <string>
 #include <NUIColor.hpp>
+#include <NUIPoint.hpp>
 #include <signals/signal.hpp>
 
 #define NUI_UNUSED(par) (void)par;
@@ -21,7 +22,9 @@ namespace NUI {
 	class NUIEvent {
 	public:
 		enum NUIEventType {
-			Paint
+			Paint,
+			Resize,
+			Move
 		};
 
 		NUIEvent(NUIEventType type) { m_type = type; }
@@ -40,8 +43,32 @@ namespace NUI {
 		NUIBoundingRect rect() { return m_rect; }
 	private:
 		NUIBoundingRect m_rect;
+	};
 
+	class NUIResizeEvent : public NUIEvent {
+	public:
+		NUIResizeEvent(NUIBoundingRect oldSize, NUIBoundingRect newSize) : NUIEvent(NUIEvent::Resize),
+			m_oldSize(oldSize),
+			m_newSize(newSize) {}
 
+		NUIBoundingRect oldSize() { return m_oldSize; }
+		NUIBoundingRect newSize() { return m_newSize; }
+
+	private:
+		NUIBoundingRect m_oldSize, m_newSize;
+	};
+
+	class NUIMoveEvent : public NUIEvent {
+	public:
+		NUIMoveEvent(NUIPoint oldPos, NUIPoint newPos) : NUIEvent(NUIEvent::Move) ,
+			m_oldPos(oldPos),
+			m_newPos(newPos) {}
+
+		NUIPoint newPos() { return m_newPos; }
+		NUIPoint oldPos() { return m_oldPos; }
+
+	private:
+		NUIPoint m_oldPos, m_newPos;
 	};
 
 	class NUIObject {
@@ -54,10 +81,6 @@ namespace NUI {
 
 		virtual NUIObject& setWidth(NUIReal width);
 		virtual NUIReal getWidth() { return m_width; }
-
-		virtual bool event(NUIEvent* event);
-
-		virtual void paintEvent(NUIPaintEvent* event);
 
 		virtual NUIObject& setHeight(NUIReal height);
 		virtual NUIReal getHeight() { return m_height; }
@@ -75,10 +98,16 @@ namespace NUI {
 		NUIColor getColor();
 		NUIObject& setColor(NUIColor color);
 
+		virtual bool event(NUIEvent* event);
+
 		void update(); 
+		void repaint();
 
 		static NUIReal nObjects;  // Object counter
 	protected:
+		virtual void paintEvent(NUIPaintEvent* event);
+		virtual void resizeEvent(NUIResizeEvent* event);
+		virtual void moveEvent(NUIMoveEvent* event);
 
 		std::vector<NUIObject*> m_childs;
 		NUIObject* m_parent;

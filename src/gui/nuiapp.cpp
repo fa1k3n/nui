@@ -53,8 +53,6 @@ void NUIApp::mainloop(volatile bool* running) {
 void NUIApp::NUIPostEvent(NUIObject* recv, NUIEvent* event) {
 	auto invoker = std::function<void()>(std::bind(&NUIObject::event, recv, event));
 	nuiApp->m_eventQueue.push(invoker);	
-	//invoker();
-	//recv->event(event);
 }
 
 void NUIApp::NUISendEvent(NUIObject* recv, NUIEvent* event) {
