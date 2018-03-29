@@ -26,23 +26,27 @@ NUIObject& NUIObject::addChild(NUIObject* obj) {
 
 NUIObject& NUIObject::setWidth(NUIReal width) {
 	m_width = width;
+	update();
 	return *this;
 }
 
 NUIObject& NUIObject::setHeight(NUIReal height) {
 	m_height = height;
+	update();
 	return *this;
 }
 
 NUIObject& NUIObject::setX(NUIReal x) {
 	m_x = x;
 	emit xChanged(x);
+	update();
 	return *this;
 }
 
 NUIObject& NUIObject::setY(NUIReal y) {
 	m_y = y;
 	emit yChanged(y);
+	update();
 	return *this;
 }
 
@@ -57,7 +61,8 @@ NUIObject& NUIObject::setColor(NUIColor color) {
 }
 
 void NUIObject::update() {
-	NUIApp::NUIPostEvent(this, new NUIPaintEvent(NUIBoundingRect{m_x, m_y, m_width, m_height}));
+	//NUIApp::NUIPostEvent(this, new NUIPaintEvent(rect()));
+	NUIApp::NUIPostEvent(this, new NUIPaintEvent(rect()));
 }
 
 bool NUIObject::event(NUIEvent* event) {

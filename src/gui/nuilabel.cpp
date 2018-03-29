@@ -42,6 +42,7 @@ void NUILabel::draw(NUIBoundingRect& rect, NUIGfxCntx* cntx) {
 	wattroff(cntx, COLOR_PAIR(NUIColorPair::getColorPair(m_objectID).index));
 }
 
+#include <iostream>
 void NUILabel::paintEvent(NUIPaintEvent* event) {
 	NUIWindow* win = NUIApp::focusWindow();
 	NUIBoundingRect r = event->rect();
