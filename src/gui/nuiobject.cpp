@@ -9,18 +9,17 @@ NUIReal NUIObject::nObjects = 0;
 NUIObject::NUIObject(NUIObject* parent) :
 	m_parent(parent),
 	m_width(0),
-	m_height(0),
+	m_height(1),
 	m_objectID(NUIObject::nObjects) {
 	NUIObject::nObjects++;
 	if(parent) {
-		parent->addChild(this);
+		NUIApp::NUIPostEvent(parent, new NUIChildEvent(this));
 	}
 	NUIColorPair::setColorPair(NUIColorPair{m_objectID, COLOR_WHITE, COLOR_BLACK});
 }
 
 NUIObject& NUIObject::addChild(NUIObject* obj) {
 	m_childs.push_back(obj);
-	update();
 	return *this;
 }		
 
@@ -51,7 +50,6 @@ NUIObject& NUIObject::setY(NUIReal y) {
 	m_y = y;
 	NUIApp::NUIPostEvent(this, new NUIMoveEvent(oldPos, NUIPoint(m_x, m_y)));
 	emit yChanged(y);
-	//update();
 	return *this;
 }
 
@@ -86,6 +84,10 @@ bool NUIObject::event(NUIEvent* event) {
 		NUIMoveEvent* e = static_cast<NUIMoveEvent*>(event);
 		moveEvent(e);
 		return true;
+	} else if(event->type() == NUIEvent::KeyPress) {
+		NUIKeyEvent* e = static_cast<NUIKeyEvent*>(event);
+		keyEvent(e);
+		return true;
 	}
 
 	return false;
@@ -104,8 +106,20 @@ void NUIObject::resizeEvent(NUIResizeEvent* event) {
 }
 
 void NUIObject::moveEvent(NUIMoveEvent* event) {
+	// Clear old location
+	mvwprintw(NUIApp::focusWindow()->m_pWin, event->oldPos().y(), event->oldPos().x(), std::string(getWidth()*getHeight(), ' ').c_str());
 	m_x = event->newPos().x();
 	m_y = event->newPos().y();
 	repaint();
 }
+
+void NUIObject::keyEvent(NUIKeyEvent* event) {
+	emit keyPressed(event->key());
+	repaint();
+}
+
+void NUIObject::childEvent(NUIChildEvent* event) {
+	addChild(event->child());
+}
+
 

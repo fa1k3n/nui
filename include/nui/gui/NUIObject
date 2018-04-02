@@ -14,6 +14,7 @@ namespace NUI {
 
 	typedef std::size_t NUIReal;
 	typedef std::string NUIString;
+	typedef char        NUIChar;
 
 	struct NUIBoundingRect {
 		NUIReal x, y, width, height;
@@ -24,7 +25,9 @@ namespace NUI {
 		enum NUIEventType {
 			Paint,
 			Resize,
-			Move
+			Move,
+			KeyPress,
+			Child
 		};
 
 		NUIEvent(NUIEventType type) { m_type = type; }
@@ -71,6 +74,28 @@ namespace NUI {
 		NUIPoint m_oldPos, m_newPos;
 	};
 
+	class NUIKeyEvent : public NUIEvent {
+	public:
+		NUIKeyEvent(NUIReal keyCode, NUIChar key) : NUIEvent(NUIEvent::KeyPress) ,
+			m_keyCode(keyCode),
+			m_key(key) {}
+		NUIReal keyCode() { return m_keyCode; }
+		NUIChar key() { return m_key; }
+	private:
+		NUIReal m_keyCode;
+		NUIChar m_key;
+	};
+
+	class NUIObject;
+	class NUIChildEvent : public NUIEvent {
+	public:
+		NUIChildEvent(NUIObject* child) : NUIEvent(NUIEvent::Child) ,
+			m_child(child) {}
+		NUIObject* child() { return m_child; }
+	private:
+		NUIObject* m_child;
+	};
+
 	class NUIObject {
 	public:
 		typedef WINDOW  NUIGfxCntx ;
@@ -85,7 +110,7 @@ namespace NUI {
 		virtual NUIObject& setHeight(NUIReal height);
 		virtual NUIReal getHeight() { return m_height; }
 
-		NUIBoundingRect rect() { return NUIBoundingRect{m_x, m_y, m_width, m_height}; }
+		virtual NUIBoundingRect rect() { return NUIBoundingRect{m_x, m_y, m_width, m_height}; }
 
 		NUIObject& setX(NUIReal x);
 		NUIReal getX() { return m_x; }
@@ -103,11 +128,16 @@ namespace NUI {
 		void update(); 
 		void repaint();
 
+		Signals::signal<NUIChar> keyPressed;
+		
 		static NUIReal nObjects;  // Object counter
 	protected:
 		virtual void paintEvent(NUIPaintEvent* event);
 		virtual void resizeEvent(NUIResizeEvent* event);
 		virtual void moveEvent(NUIMoveEvent* event);
+		virtual void keyEvent(NUIKeyEvent* event);
+		virtual void childEvent(NUIChildEvent* event);
+
 
 		std::vector<NUIObject*> m_childs;
 		NUIObject* m_parent;

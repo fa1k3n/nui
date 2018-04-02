@@ -4,7 +4,8 @@
 using namespace NUI;
 
 NUILabel::NUILabel(NUIObject* parent) : NUIObject(parent)
-	, m_text("") {
+	, m_text("")
+	, m_sizeFollowContent(true) {
 
 }
 
@@ -32,7 +33,7 @@ void NUILabel::draw(NUIBoundingRect& rect, NUIGfxCntx* cntx) {
 
 	// If we are to cut the string we want an ellipsis in
 	// the end, e.g. 3 chars 
-	if (contStr.length() > rect.width) {
+	if (contStr.length() > rect.width && !m_sizeFollowContent) {
 		contStr = contStr.substr(0, rect.width - 3);
 		contStr += "...";
 	}
@@ -48,4 +49,15 @@ void NUILabel::paintEvent(NUIPaintEvent* event) {
 	draw(r, win->m_pWin);
 	NUIObject::paintEvent(event);
 }
+
+void NUILabel::keyEvent(NUIKeyEvent* event) {
+	setText(m_text + NUI::NUIString(1, event->key()));
+	NUIObject::keyEvent(event);
+}
+
+void NUILabel::resizeEvent(NUIResizeEvent* event) {
+	m_sizeFollowContent = false;
+	NUIObject::resizeEvent(event);
+}
+
 

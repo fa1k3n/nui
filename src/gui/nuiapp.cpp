@@ -1,15 +1,15 @@
 #include <NUIApp>
 #include <NUIWindow>
 
+#include <NUILabel>
 #include <functional>
 
 using namespace NUI;
 
 NUIApp* nuiApp = nullptr;
 
-NUIApp::NUIApp() :
-	m_running(false) {
-		nuiApp = this;
+NUIApp::NUIApp() {		
+	nuiApp = this;
 }
 
 /** Destructor */
@@ -31,14 +31,22 @@ bool NUIApp::isKeyPressed() {
  	return nuiApp->m_win; 
  }
 
+
+extern NUILabel* tmplbl;
+NUIObject* NUIApp::focusObject() {
+	return tmplbl;
+}
+
 void NUIApp::handleKeyPress() {
-	emit keyPressed(getch());
+	int ch = getch();
+
+	NUIApp::NUIPostEvent(NUIApp::focusObject(), new NUIKeyEvent(ch, (char)ch));
 }
 
 
 /** Initialize */
 void NUIApp::mainloop(volatile bool* running) {
-	while(*running) {
+	while(*running) {		
 		if(isKeyPressed()) handleKeyPress();
 
 		while(nuiApp->m_eventQueue.size() > 0) {

@@ -5,28 +5,24 @@
 
 #include <signals/signal.hpp>
 
+NUI::NUILabel* tmplbl;
 int main(void) {
 	NUI::NUIApp app;
 	NUI::NUIWindow win;
 
-	//NUI::NUIRow row(&win);
-	//row.setX(5).setY(5).setWidth(50);
-	
 	NUI::NUILabel lbl(&win);
-	lbl.setTextColor(COLOR_BLACK).setText("Keypress: ").setColor(COLOR_GREEN).setX(10).setY(5).setWidth(15);
+	lbl.setText("Keypress:").setX(10).setY(5);
+
+	NUI::NUILabel lblInp(&win);
+	lblInp.setTextColor(COLOR_BLACK).setColor(COLOR_GREEN).setWidth(1).setX(19).setY(5);
 
 	NUI::NUILabel lbl2(&win);
-	lbl2.setText("").setX(25).setY(5).setWidth(25).setColor(COLOR_MAGENTA);
+	lbl2.setWidth(25).setX(25).setY(5).setColor(COLOR_MAGENTA);
+	tmplbl = &lbl2;
 	
-	Signals::connect(&NUI::NUIApp::keyPressed, &app, [&](NUI::NUIReal ch) {
-		NUI::NUIString s(1, (char)ch);
-		lbl.setText("Keypress: " + s);
-		lbl2.setText(lbl2.getText() + s);
-	});
-
-	Signals::connect(&NUI::NUIApp::keyPressed, &app, [&](NUI::NUIReal ch) {
-
+	Signals::connect(&NUI::NUILabel::keyPressed, &lbl2, [&](NUI::NUIChar key) {
 		lbl2.setColor(lbl2.getColor() == COLOR_MAGENTA ? COLOR_RED : COLOR_MAGENTA);
+		lblInp.setText(NUI::NUIString(1, key));
 	});
 
 	bool running = true;

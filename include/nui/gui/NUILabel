@@ -20,14 +20,17 @@ namespace NUI {
 		NUILabel& setTextColor(NUIColor color);
 
 		void paintEvent(NUIPaintEvent* event) override;
+		void keyEvent(NUIKeyEvent* event) override;
+		void resizeEvent(NUIResizeEvent* event) override;
 
 
-		NUIReal getWidth() { return m_width > 0 ? m_width : m_text.length(); };
+		NUIReal getWidth() override { return m_width > 0 ? m_width : m_text.length(); };
 
 	private:
 		void draw(NUIBoundingRect& br, NUIGfxCntx* cntx);
 
 		NUIString m_text;
+		bool m_sizeFollowContent;
 	};
 }
 

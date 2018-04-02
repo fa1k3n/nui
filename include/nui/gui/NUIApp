@@ -27,6 +27,8 @@ namespace NUI {
         static void NUISendEvent(NUIObject* recv, NUIEvent* event);
 
         static NUIWindow* focusWindow();
+        static NUIObject* focusObject();
+        
         /** Destructor */
         virtual ~NUIApp();
 
@@ -36,7 +38,6 @@ namespace NUI {
         Signals::signal<NUIReal> keyPressed;
 
     private:
-        bool m_running;
         NUIWindow* m_win;
 
         std::queue<std::function<void()>> m_eventQueue;
