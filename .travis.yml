@@ -10,6 +10,10 @@ addons:
       - cmake
       - g++-4.8
       - libboost-all-dev
+      
+before-install:
+    - apt-get -qq update
+    - apt-get install -y cmake libboost-all-dev
 
 before_script:
     - mkdir build && cd build
