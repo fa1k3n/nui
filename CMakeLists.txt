@@ -7,9 +7,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
+find_package(Boost 1.58.0 REQUIRED )
+message(STATUS "Using Boost include: ${Boost_INCLUDE_DIRS}")
+include_directories(${Boost_INCLUDE_DIRS})
+
 set(SIGNALS_INC ${CMAKE_SOURCE_DIR}/external/signals/include)
 include_directories(${SIGNALS_INC})
-add_subdirectory(${CMAKE_SOURCE_DIR}/external/signals/)
 
 set(NUI_INC ${CMAKE_SOURCE_DIR}/include)
 set(CORE_INC ${NUI_INC}/nui/core)
