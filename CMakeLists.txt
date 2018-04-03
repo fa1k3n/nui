@@ -7,9 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
-#set(BOOST_INC ${CMAKE_SOURCE_DIR}/external/boost_1_66_0)
-#include_directories(${BOOST_INC})
-
 set(SIGNALS_INC ${CMAKE_SOURCE_DIR}/external/signals/include)
 include_directories(${SIGNALS_INC})
 
