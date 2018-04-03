@@ -9,7 +9,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
 set(SIGNALS_INC ${CMAKE_SOURCE_DIR}/external/signals/include)
 include_directories(${SIGNALS_INC})
-add_directory(${CMAKE_SOURCE_DIR}/external/signals/)
+add_subdirectory(${CMAKE_SOURCE_DIR}/external/signals/)
 
 set(NUI_INC ${CMAKE_SOURCE_DIR}/include)
 set(CORE_INC ${NUI_INC}/nui/core)
