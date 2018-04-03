@@ -11,35 +11,46 @@ set(SIGNALS_INC ${CMAKE_SOURCE_DIR}/external/signals/include)
 include_directories(${SIGNALS_INC})
 
 set(NUI_INC ${CMAKE_SOURCE_DIR}/include)
-set(GUI_INC ${NUI_INC}/nui/gui)
+set(CORE_INC ${NUI_INC}/nui/core)
+set(WIDGETS_INC ${NUI_INC}/nui/widgets)
 
-include_directories(${GUI_INC})
+include_directories(${CORE_INC})
+include_directories(${WIDGETS_INC})
 
 set(NUI_SRC ${CMAKE_SOURCE_DIR}/src)
-set(GUI_SRC ${NUI_SRC}/gui)
+set(WIDGETS_SRC ${NUI_SRC}/widgets)
+set(CORE_SRC ${NUI_SRC}/core)
 
-set(GUI_INC_FILES 
-	${GUI_INC}/NUIApp
-	${GUI_INC}/NUILabel
-	${GUI_INC}/NUIObject
-	${GUI_INC}/NUIWindow
-	${GUI_INC}/NUIPoint.hpp
-	${GUI_INC}/NUIRow.hpp
-	${GUI_INC}/NUIColor.hpp
+set(WIDGETS_INC_FILES 
+	${WIDGETS_INC}/NUILabel
+	${WIDGETS_INC}/NUIRow.hpp
 )
 
-set(GUI_SRC_FILES 
-	${GUI_SRC}/nuiapp.cpp
-	${GUI_SRC}/nuilabel.cpp
-	${GUI_SRC}/nuiobject.cpp
-	${GUI_SRC}/nuiwindow.cpp
-	${GUI_SRC}/nuirow.cpp
+set(CORE_INC_FILES 
+	${CORE_INC}/NUIApp
+	${CORE_INC}/NUIObject
+	${CORE_INC}/NUITypes.hpp
+	${CORE_INC}/NUIWindow
 )
 
-add_library(nuigui ${GUI_SRC_FILES} ${GUI_INC_FILES})
-target_link_libraries(nuigui ncurses pthread)
+set(WIDGETS_SRC_FILES 
+	${WIDGETS_SRC}/nuilabel.cpp
+	${WIDGETS_SRC}/nuirow.cpp
+)
+
+set(CORE_SRC_FILES 
+	${CORE_SRC}/nuiapp.cpp
+	${CORE_SRC}/nuiobject.cpp
+	${CORE_SRC}/nuiwindow.cpp
+)
+
+add_library(nuicore ${CORE_SRC_FILES} ${CORE_INC_FILES})
+target_link_libraries(nuicore ncurses)
+
+add_library(nuiwidgets ${WIDGETS_SRC_FILES} ${WIDGETS_INC_FILES})
+target_link_libraries(nuiwidgets ncurses)
 
 add_executable(example EXCLUDE_FROM_ALL example/basic.cpp)
-target_link_libraries(example nuigui)
+target_link_libraries(example nuicore nuiwidgets)
 
 

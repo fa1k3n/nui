@@ -7,15 +7,18 @@ using namespace NUI;
 NUIReal NUIObject::nObjects = 0;
 
 NUIObject::NUIObject(NUIObject* parent) :
-	m_parent(parent),
-	m_width(0),
-	m_height(1),
-	m_objectID(NUIObject::nObjects) {
-	NUIObject::nObjects++;
-	if(parent) {
-		NUIApp::NUIPostEvent(parent, new NUIChildEvent(this));
-	}
-	NUIColorPair::setColorPair(NUIColorPair{m_objectID, COLOR_WHITE, COLOR_BLACK});
+    m_parent(parent),
+    m_width(0),
+    m_height(1),
+    m_objectID(NUIObject::nObjects) {
+    NUIObject::nObjects++;
+    if(parent) {
+        NUIApp::NUIPostEvent(parent, new NUIChildEvent(this));
+    } else if (nuiApp) {
+        // This is a new top level window
+        NUIApp::NUIPostEvent(nuiApp,  new NUIChildEvent(this));
+    }
+    NUIColorPair::setColorPair(NUIColorPair{m_objectID, COLOR_WHITE, COLOR_BLACK});
 }
 
 NUIObject& NUIObject::addChild(NUIObject* obj) {

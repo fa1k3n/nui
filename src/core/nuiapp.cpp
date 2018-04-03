@@ -1,6 +1,4 @@
 #include <NUIApp>
-#include <NUIWindow>
-
 #include <NUILabel>
 #include <functional>
 
@@ -9,7 +7,19 @@ using namespace NUI;
 NUIApp* nuiApp = nullptr;
 
 NUIApp::NUIApp() {		
-	nuiApp = this;
+    nuiApp = this;
+    
+    // Initialize ncurses
+    initscr(); 
+    noecho();
+    timeout(0);
+    
+    
+    if(has_colors() == TRUE)
+            start_color();
+
+    // Make black into black, not just gray
+    init_color(COLOR_BLACK, 0, 0, 0);
 }
 
 /** Destructor */
@@ -27,14 +37,14 @@ bool NUIApp::isKeyPressed() {
     }
 }
 
- NUIWindow* NUIApp::focusWindow() {
- 	return nuiApp->m_win; 
- }
-
+NUIWindow* NUIApp::focusWindow() {
+    //return static_cast<NUIWindow*>(nuiApp->m_childs.front());
+    return nuiApp->m_win; 
+}
 
 extern NUILabel* tmplbl;
 NUIObject* NUIApp::focusObject() {
-	return tmplbl;
+    return tmplbl;
 }
 
 void NUIApp::handleKeyPress() {
@@ -42,7 +52,6 @@ void NUIApp::handleKeyPress() {
 
 	NUIApp::NUIPostEvent(NUIApp::focusObject(), new NUIKeyEvent(ch, (char)ch));
 }
-
 
 /** Initialize */
 void NUIApp::mainloop(volatile bool* running) {
@@ -66,4 +75,3 @@ void NUIApp::NUIPostEvent(NUIObject* recv, NUIEvent* event) {
 void NUIApp::NUISendEvent(NUIObject* recv, NUIEvent* event) {
 	recv->event(event);
 }
-

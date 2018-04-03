@@ -11,10 +11,8 @@
 
 namespace NUI {
 
-    class NUIApp 
-    {
+    class NUIApp : public NUIObject {
     public:
-
         /** Constructor */
         NUIApp();
 
