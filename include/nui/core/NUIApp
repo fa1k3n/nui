@@ -30,8 +30,7 @@ namespace NUI {
         bool isKeyPressed();
         void handleKeyPress();
 
-        static void NUIPostEvent(NUIObject* recv, NUIEvent* event);
-        
+        static void NUIPostEvent(NUIObject* recv, NUIEvent* event);  
         static void NUISendEvent(NUIObject* recv, NUIEvent* event);
 
         static NUIWindow* focusWindow();

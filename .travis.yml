@@ -4,17 +4,9 @@ compiler: gcc
 sudo: required
 dist: xenial
 
-addons:
-    apt:
-        sources:
-            - ubuntu-toolchain-r-test
-            - kubuntu-backports
-            - boost-latest
-        packages:
-            - g++4.8
-            - cmake
-            - libboost-all-dev
-
+before-install:
+    - sudo apt-get -qq update
+    - sudo apt-get install -y cmake libboost-all-dev
 script:
     - mkdir build && cd build
     - cmake ..

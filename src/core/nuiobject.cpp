@@ -23,14 +23,11 @@ NUIObject& NUIObject::addChild(NUIObject* obj) {
 	return *this;
 }		
 
-
 NUI::NUIObject* tmpobj;
 NUIObject& NUIObject::setFocus(NUIBool f) {
     tmpobj = this;
     return *this;
 }
-
-
 
 bool NUIObject::event(NUIEvent* event) {
     if(event->type() == NUIEvent::Child) {
