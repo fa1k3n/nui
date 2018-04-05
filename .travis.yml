@@ -10,4 +10,4 @@ before_install:
 script:
     - mkdir build && cd build
     - cmake ..
-    - make
+    - make && make build-tests && make test

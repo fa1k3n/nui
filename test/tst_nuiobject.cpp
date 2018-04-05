@@ -19,6 +19,6 @@ TEST(TestSuite, testBasicCreateWithParent) {
     NUI::NUIApp app(&painter);
     NUI::NUIObject parent, obj(&parent);
     
-    EXPECT_TRUE();
+    EXPECT_TRUE(true);
 }
 
