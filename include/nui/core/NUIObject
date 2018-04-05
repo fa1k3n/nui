@@ -6,87 +6,12 @@
 #include <string>
 #include <NUITypes.hpp>
 #include <signals/signal.hpp>
+#include <events/NUIEvent.hpp>
+#include <events/NUIChildEvent.hpp>
 
 #define NUI_UNUSED(par) (void)par;
 
 namespace NUI {
-
-        class NUIEvent {
-        public:
-                enum NUIEventType {
-                        Paint,
-                        Resize,
-                        Move,
-                        KeyPress,
-                        Child
-                };
-
-                NUIEvent(NUIEventType type) { m_type = type; }
-                NUIEventType type() { return m_type; }
-
-        private:
-                NUIEventType m_type;
-        };
-
-        class NUIPaintEvent : public NUIEvent {
-        public:
-                NUIPaintEvent(NUIBoundingRect rect) : NUIEvent(NUIEvent::Paint) {
-                        m_rect = rect;
-                }
-
-                NUIBoundingRect rect() { return m_rect; }
-        private:
-                NUIBoundingRect m_rect;
-        };
-
-        class NUIResizeEvent : public NUIEvent {
-        public:
-                NUIResizeEvent(NUIBoundingRect oldSize, NUIBoundingRect newSize) : NUIEvent(NUIEvent::Resize),
-                        m_oldSize(oldSize),
-                        m_newSize(newSize) {}
-
-                NUIBoundingRect oldSize() { return m_oldSize; }
-                NUIBoundingRect newSize() { return m_newSize; }
-
-        private:
-                NUIBoundingRect m_oldSize, m_newSize;
-        };
-
-        class NUIMoveEvent : public NUIEvent {
-        public:
-                NUIMoveEvent(NUIPoint oldPos, NUIPoint newPos) : NUIEvent(NUIEvent::Move) ,
-                        m_oldPos(oldPos),
-                        m_newPos(newPos) {}
-
-                NUIPoint newPos() { return m_newPos; }
-                NUIPoint oldPos() { return m_oldPos; }
-
-        private:
-                NUIPoint m_oldPos, m_newPos;
-        };
-
-        class NUIKeyEvent : public NUIEvent {
-        public:
-                NUIKeyEvent(NUIReal keyCode, NUIChar key) : NUIEvent(NUIEvent::KeyPress) ,
-                        m_keyCode(keyCode),
-                        m_key(key) {}
-                NUIReal keyCode() { return m_keyCode; }
-                NUIChar key() { return m_key; }
-        private:
-                NUIReal m_keyCode;
-                NUIChar m_key;
-        };
-
-        class NUIObject;
-        class NUIChildEvent : public NUIEvent {
-        public:
-                NUIChildEvent(NUIObject* child) : NUIEvent(NUIEvent::Child) ,
-                        m_child(child) {}
-                NUIObject* child() { return m_child; }
-        private:
-                NUIObject* m_child;
-        };
-
         class NUIObject {
         public:
             NUIObject(NUIObject* parent = nullptr);
