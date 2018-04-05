@@ -27,25 +27,27 @@ set(CORE_SRC ${NUI_SRC}/core)
 
 set(WIDGETS_INC_FILES 
 	${WIDGETS_INC}/NUILabel
-	${WIDGETS_INC}/NUIRow.hpp
+	${WIDGETS_INC}/NUIRow.hpp   
+                ${WIDGETS_INC}/NUIWidget.hpp
+	${WIDGETS_INC}/NUIWindow
 )
 
 set(CORE_INC_FILES 
 	${CORE_INC}/NUIApp
 	${CORE_INC}/NUIObject
 	${CORE_INC}/NUITypes.hpp
-	${CORE_INC}/NUIWindow
 )
 
 set(WIDGETS_SRC_FILES 
 	${WIDGETS_SRC}/nuilabel.cpp
-	${WIDGETS_SRC}/nuirow.cpp
+	${WIDGETS_SRC}/nuirow.cpp	
+                ${WIDGETS_SRC}/NUIWidget.cpp
+	${WIDGETS_SRC}/nuiwindow.cpp
 )
 
 set(CORE_SRC_FILES 
 	${CORE_SRC}/nuiapp.cpp
 	${CORE_SRC}/nuiobject.cpp
-	${CORE_SRC}/nuiwindow.cpp
 )
 
 

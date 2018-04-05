@@ -3,10 +3,11 @@
 
 #include <ncurses.h>
 #include <NUIObject>
+#include <NUIWidget.hpp>
 
 namespace NUI {
    
-    class NUIWindow : public NUIObject {
+    class NUIWindow : public NUIWidget {
     public:
             NUIWindow(NUIObject* parent = nullptr);
             ~NUIWindow();

@@ -3,7 +3,7 @@
 
 using namespace NUI;
 
-NUILabel::NUILabel(NUIObject* parent) : NUIObject(parent)
+NUILabel::NUILabel(NUIObject* parent) : NUIWidget(parent)
 	, m_text("")
 	, m_sizeFollowContent(true) {
 
@@ -47,17 +47,17 @@ void NUILabel::draw(NUIBoundingRect& rect) {
 void NUILabel::paintEvent(NUIPaintEvent* event) {
     NUIBoundingRect r = event->rect();
     draw(r);
-    NUIObject::paintEvent(event);
+    NUIWidget::paintEvent(event);
 }
 
 void NUILabel::keyEvent(NUIKeyEvent* event) {
 	setText(m_text + NUI::NUIString(1, event->key()));
-	NUIObject::keyEvent(event);
+	NUIWidget::keyEvent(event);
 }
 
 void NUILabel::resizeEvent(NUIResizeEvent* event) {
 	m_sizeFollowContent = false;
-	NUIObject::resizeEvent(event);
+	NUIWidget::resizeEvent(event);
 }
 
 

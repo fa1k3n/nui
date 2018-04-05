@@ -1,13 +1,13 @@
 #ifndef __NUI_LABEL__
 #define __NUI_LABEL__
 
-#include <NUIObject>
+#include <NUIWidget.hpp>
 #include <string>
 
 #include <signals/signal.hpp>
 
 namespace NUI {
-    class NUILabel : public NUIObject {
+    class NUILabel : public NUIWidget {
     public:
         NUILabel(NUIObject* parent = nullptr);
 

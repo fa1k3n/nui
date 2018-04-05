@@ -92,48 +92,16 @@ namespace NUI {
             NUIObject(NUIObject* parent = nullptr);
 
             NUIObject& addChild(NUIObject* obj);
-
-            virtual NUIObject& setWidth(NUIReal width);
-            virtual NUIReal getWidth() { return m_width; }
-
-            virtual NUIObject& setHeight(NUIReal height);
-            virtual NUIReal getHeight() { return m_height; }
-
-            virtual NUIBoundingRect rect() { return NUIBoundingRect{m_x, m_y, m_width, m_height}; }
-
-            NUIObject& setX(NUIReal x);
-            NUIReal getX() { return m_x; }
-            Signals::signal<NUIReal> xChanged;
-
-            NUIObject& setY(NUIReal y);
-            NUIReal getY() { return m_y; }
-            Signals::signal<NUIReal> yChanged;
-
-            NUIColor getColor();
-            NUIObject& setColor(NUIColor color);
-
             NUIObject& setFocus(NUIBool f);
             
             virtual bool event(NUIEvent* event);
 
-            void update(); 
-            void repaint();
-
-            Signals::signal<NUIChar> keyPressed;
-
             static NUIReal nObjects;  // Object counter
         protected:
-                virtual void paintEvent(NUIPaintEvent* event);
-                virtual void resizeEvent(NUIResizeEvent* event);
-                virtual void moveEvent(NUIMoveEvent* event);
-                virtual void keyEvent(NUIKeyEvent* event);
                 virtual void childEvent(NUIChildEvent* event);
-
 
                 std::vector<NUIObject*> m_childs;
                 NUIObject* m_parent;
-                NUIReal m_x, m_y;
-                NUIReal m_width, m_height;
                 NUIReal m_objectID;
         };
 }

@@ -1,11 +1,12 @@
 #include <NUIWindow>
 #include <NUIApp>
+#include <NUIWidget.hpp>
 
 #include <algorithm>
 
 using namespace NUI;
 
-NUIWindow::NUIWindow(NUIObject* parent) : NUIObject(parent) {
+NUIWindow::NUIWindow(NUIObject* parent) : NUIWidget(parent) {
     nuiApp->setMainWin(this);
 
     int h, w;
@@ -19,8 +20,10 @@ NUIWindow::~NUIWindow() {
 
 void NUIWindow::paintEvent(NUIPaintEvent* event) {
     wclear(m_pWin);
-    for(auto obj : m_childs)
-        NUIApp::NUISendEvent(obj, new NUIPaintEvent(obj->rect()));
+    for(auto obj : m_childs) {
+        auto widget = static_cast<NUIWidget*>(obj);
+        NUIApp::NUISendEvent(obj, new NUIPaintEvent(widget->rect()));
 
-    NUIObject::paintEvent(event);
+    }   
+    NUIWidget::paintEvent(event);
 }
