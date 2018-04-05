@@ -9,12 +9,22 @@
 
 #include <signals/signal.hpp>
 
+class IPainter {
+public:
+    virtual void init() = 0;
+};
+
+class NCursesPainter : public IPainter {
+public:
+    void init();
+};
+
 namespace NUI {
 
     class NUIApp : public NUIObject {
     public:
         /** Constructor */
-        NUIApp();
+        NUIApp(IPainter* painter = nullptr);
 
         void setMainWin(NUIWindow* win) { m_win = win; }
         bool isKeyPressed();

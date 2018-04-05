@@ -66,6 +66,12 @@ NUIObject& NUIObject::setColor(NUIColor color) {
 	return *this;
 }
 
+NUI::NUIObject* tmpobj;
+NUIObject& NUIObject::setFocus(NUIBool f) {
+    tmpobj = this;
+    return *this;
+}
+
 void NUIObject::update() {
 	NUIApp::NUIPostEvent(this, new NUIPaintEvent(rect()));
 }

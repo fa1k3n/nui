@@ -48,6 +48,9 @@ set(CORE_SRC_FILES
 	${CORE_SRC}/nuiwindow.cpp
 )
 
+
+add_subdirectory("test")
+
 add_library(nuicore ${CORE_SRC_FILES} ${CORE_INC_FILES})
 target_link_libraries(nuicore ncurses)
 

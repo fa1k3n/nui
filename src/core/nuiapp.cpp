@@ -6,10 +6,8 @@ using namespace NUI;
 
 NUIApp* nuiApp = nullptr;
 
-NUIApp::NUIApp() {		
-    nuiApp = this;
-    
-    // Initialize ncurses
+void NCursesPainter::init() {
+        // Initialize ncurses
     initscr(); 
     noecho();
     timeout(0);
@@ -20,6 +18,14 @@ NUIApp::NUIApp() {
 
     // Make black into black, not just gray
     init_color(COLOR_BLACK, 0, 0, 0);
+}
+
+NUIApp::NUIApp(IPainter* painter) {		
+    nuiApp = this;
+    if(!painter) {
+        NCursesPainter p;
+        p.init();
+    }
 }
 
 /** Destructor */
@@ -42,9 +48,9 @@ NUIWindow* NUIApp::focusWindow() {
     return nuiApp->m_win; 
 }
 
-extern NUILabel* tmplbl;
+extern NUIObject* tmpobj;
 NUIObject* NUIApp::focusObject() {
-    return tmplbl;
+    return tmpobj;
 }
 
 void NUIApp::handleKeyPress() {

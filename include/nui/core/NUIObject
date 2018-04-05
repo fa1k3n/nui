@@ -112,6 +112,8 @@ namespace NUI {
             NUIColor getColor();
             NUIObject& setColor(NUIColor color);
 
+            NUIObject& setFocus(NUIBool f);
+            
             virtual bool event(NUIEvent* event);
 
             void update(); 
